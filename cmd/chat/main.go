@@ -13,9 +13,9 @@ import (
 var magic = []byte("CHTR")
 
 type App struct {
-	sendConn *net.UDPConn
+	sendConn     *net.UDPConn
 	recvMessages chan *ptypes.BasicMessage
-	Name string
+	Name         string
 }
 
 func (a *App) Send(msg *ptypes.BasicMessage) error {
@@ -31,7 +31,6 @@ func (a *App) Send(msg *ptypes.BasicMessage) error {
 	_, err = a.sendConn.Write(payload.Bytes())
 	return err
 }
-
 
 func main() {
 
@@ -92,42 +91,12 @@ func main() {
 		}
 	}()
 
-	go func() {
-		time.Sleep(500 * time.Millisecond)
-
-		// fmt.Printf("Writing to %s\n", addr)
-
-		for i := 0; i < 5; i++ {
-			msg := &ptypes.BasicMessage{
-				SenderName: "Bob",
-				Message: "This is a test message",
-				Timestamp: uint32(time.Now().Unix()),
-			}
-
-			data, err := proto.Marshal(msg)
-			if err != nil {
-				log.Fatal("marshaling error: ", err)
-			}
-
-			var payload bytes.Buffer
-			_, _ = payload.Write(magic)
-			_, _ = payload.Write(data)
-
-			_, err = sendConn.Write(payload.Bytes())
-			if err != nil {
-				log.Panicln(err)
-			}
-			// fmt.Printf("Wrote: %d\n", n)
-		}
-	}()
-
 	time.Sleep(500 * time.Millisecond)
 
 	guiMain(&App{
-		sendConn: sendConn,
+		sendConn:     sendConn,
 		recvMessages: recvMessages,
-		Name: "Bob",
+		Name:         "Unnamed",
 	})
-
 
 }

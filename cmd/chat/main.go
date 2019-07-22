@@ -37,9 +37,14 @@ func main() {
 	// see: https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml#multicast-addresses-3
 
 	// local: 224.0.0.157
-	// globally routable? 224.0.21.137
+	// adhoc 1: 224.0.21.137
 
-	addr, err := net.ResolveUDPAddr("udp4", "224.0.21.137:22355")
+	var addrString = "224.0.21.137:22355"
+	if addr := os.Getenv("CHAT_ADDR"); addr != "" {
+		addrString = addr
+	}
+
+	addr, err := net.ResolveUDPAddr("udp4", addrString)
 	if err != nil {
 		log.Panicln(err)
 	}

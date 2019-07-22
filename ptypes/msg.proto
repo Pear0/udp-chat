@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "ptypes";
+
+message BasicMessage {
+
+    string sender_name = 1;
+    string message = 2;
+
+    uint32 oid = 3;
+    uint32 timestamp = 4;
+
+}
